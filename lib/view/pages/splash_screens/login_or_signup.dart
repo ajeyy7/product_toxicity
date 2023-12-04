@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toxic_products/view/pages/auth_page/components/container_login.dart';
 import 'package:toxic_products/view/pages/auth_page/signup_page.dart';
 
 import '../auth_page/login_page.dart';
+import '../home_page/home_page.dart';
 
 class LoginorSignUp extends StatefulWidget {
   const LoginorSignUp({super.key});
@@ -13,7 +15,22 @@ class LoginorSignUp extends StatefulWidget {
 }
 
 class _LoginorSignUpState extends State<LoginorSignUp> {
+  late SharedPreferences preferences;
+  late bool newuser;
   @override
+  void initState() {
+    check_if_user_already_login();
+    super.initState();
+  }
+  void check_if_user_already_login()async {
+    preferences = await SharedPreferences.getInstance();
+
+    newuser = preferences.getBool('newuser') ?? true;
+    if (newuser == false) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
+    }
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -82,4 +99,5 @@ class _LoginorSignUpState extends State<LoginorSignUp> {
       ),
     );
   }
+
 }

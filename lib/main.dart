@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:toxic_products/view/pages/splash_screens/splash_screen.dart';
+import 'package:toxic_products/view/pages/splash_screens/login_or_signup.dart';
 void main(){
   runApp(MainPage());
 }
@@ -10,7 +10,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:SplashScreen(),
+      home:LoginorSignUp(),
     );
   }
 }

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toxic_products/view/pages/auth_page/signup_page.dart';
 import 'package:toxic_products/view/pages/home_page/components/imageupload_button.dart';
 import 'package:toxic_products/view/pages/home_page/components/home_search.dart';
 import 'package:toxic_products/view/pages/home_page/components/search_button.dart';
@@ -19,8 +21,14 @@ class _HomePageState extends State<HomePage> {
   TextEditingController searchcontroller = TextEditingController();
   String _sideEffects = "";
   File? _image;
+  late SharedPreferences preferences;
 
   final picker = ImagePicker();
+
+  void initPreferences() async {
+    preferences = await SharedPreferences.getInstance();
+  }
+
 
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -76,7 +84,7 @@ class _HomePageState extends State<HomePage> {
     return '';
   }
 
-  Future<void> _fetchSideEffects() async {
+  Future<String> _fetchSideEffects() async {
     String apiUrl = "http://10.0.2.2:8000/api/text/";
 
     try {
@@ -101,6 +109,7 @@ class _HomePageState extends State<HomePage> {
 
       print("Error: $error");
     }
+    return "";
   }
 
   late ImagePicker _imagePicker;
@@ -108,6 +117,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    initPreferences();
     _imagePicker = ImagePicker();
   }
 
@@ -120,8 +130,13 @@ class _HomePageState extends State<HomePage> {
           elevation: 0,
           actions: [
             Padding(
-              padding: const EdgeInsets.only(top:10,right: 20),
-              child:IconButton(onPressed: (){}, icon: Icon(Icons.logout),color: Colors.grey.shade50)
+                padding: const EdgeInsets.only(top: 10, right: 20),
+                child: IconButton(onPressed: () {
+                  preferences.setBool("newuser", true);
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SignUp()));
+                },
+                    icon: Icon(Icons.logout),
+                    color: Colors.grey.shade50)
             )
           ],
         ),
@@ -131,7 +146,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 15,horizontal: 15),
+                const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                 child: Row(
                   children: [
                     Text(
@@ -150,7 +165,10 @@ class _HomePageState extends State<HomePage> {
                     topLeft: Radius.circular(32)),
                 child: Container(
                   color: Colors.grey.shade50,
-                  height: MediaQuery.of(context).size.height * 0.9,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.9,
                   width: double.infinity,
                   child: SingleChildScrollView(
                     child: Column(

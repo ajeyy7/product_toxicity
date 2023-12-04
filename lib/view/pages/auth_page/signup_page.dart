@@ -19,25 +19,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController passcontroller = TextEditingController();
   late SharedPreferences preferences;
 
-  // Future<void> registerr() async {
-  //   try{
-  //     var response= await http.post(Uri.parse("http://10.0.2.2:8000/api/reg/"),
-  //         body: ({
-  //           "username":usernamecontroller.text.trim(),
-  //           "email":emailcontroller.text.trim(),
-  //           "password":passcontroller.text.trim(),
-  //         })
-  //     );
-  // if(response.statusCode==200){
-  //   Navigator.of(context).push(MaterialPageRoute(builder: (c)=>LoginPage()));
-  // }else{
-  //   print("Registration failed: ${response.statusCode}");
-  // }
-  //   }catch(e){
-  //     print("Error making http request $e");
-  //   }
-  //
-  // }
+  
 
   @override
   Widget build(BuildContext context) {

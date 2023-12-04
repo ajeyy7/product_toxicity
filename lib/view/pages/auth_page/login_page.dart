@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toxic_products/view/pages/auth_page/components/container_login.dart';
-import 'package:http/http.dart' as http;
 import 'package:toxic_products/view/pages/auth_page/signup_page.dart';
 import 'package:toxic_products/view/pages/home_page/home_page.dart';
 import 'components/textfeild_login_signup.dart';
@@ -21,24 +20,6 @@ class _LoginPageState extends State<LoginPage> {
   late SharedPreferences preferences;
   late bool newuser;
 
-  // Future<void> login() async {
-  //   try{
-  //     var response= await http.post(Uri.parse("http://127.0.0.1:8000/token/"),
-  //         body: ({
-  //           "email":emailcontroller.text.trim(),
-  //           "password":passcontroller.text.trim(),
-  //         })
-  //     );
-  //     if(response.statusCode==200){
-  //       Navigator.of(context).push(MaterialPageRoute(builder: (c)=>HomePage()));
-  //     }else{
-  //       print("Registration failed: ${response.statusCode}");
-  //     }
-  //   }catch(e){
-  //     print("Error making http request $e");
-  //   }
-  //
-  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +39,6 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    //Icon(Icons.ac_unit_outlined,size: 50,weight: 20,color: Colors.teal),
                     Text(
                       "Login to continue",
                       style: GoogleFonts.josefinSans(
@@ -135,9 +115,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void checkandLogin() async {
-    preferences = await SharedPreferences.getInstance()!;
-    String regemail = preferences.getString('regemail')!;
-    String regpass = preferences.getString('regpass')!;
+    preferences = await SharedPreferences.getInstance();
+    String regemail = preferences.getString('regemail')??"";
+    String regpass = preferences.getString('regpass')??"";
 
     String logemail = emailcontroller.text.trim();
     String logpass = passcontroller.text.trim();
@@ -155,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
     }else
     {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("both fileds needs to be filled")));
+          SnackBar(content: Text("both fields needs to be filled")));
     }
   }
 }
